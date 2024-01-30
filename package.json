@@ -1,0 +1,15 @@
+{
+	"name": "olon",
+	"version": "0.0.0",
+	"description": "Lightweight WebGL2 Tools",
+	"main": "src/Olon.js",
+	"repository": {
+		"url": "https://github.com/ZRNOF/Olon"
+	},
+	"scripts": {},
+	"keywords": [
+		"WebGL2"
+	],
+	"author": "Zaron Chen",
+	"license": "MIT"
+}
