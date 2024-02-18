@@ -58,6 +58,17 @@ class Olon {
 		return { positionData, texCoordData }
 	}
 
+	quadData() {
+		return Data([
+			[-1, -1, 0, 0],
+			[1, -1, 1, 0],
+			[1, 1, 1, 1],
+			[1, 1, 1, 1],
+			[-1, 1, 0, 1],
+			[-1, -1, 0, 0],
+		])
+	}
+
 	sketch() {
 		const { positionData, texCoordData } = this.sketchData()
 		this.setAttribute("aPosition", positionData, "f32", 2)
@@ -333,22 +344,30 @@ class Olon {
 		}, 0)
 	}
 
-	_vaoByBufferInfo(programObj, bufferInfo) {
+	_vaoByBufferInfos(programObj, bufferInfos) {
+		if (!Array.isArray(bufferInfos)) bufferInfos = [bufferInfos]
 		const vao = this.gl.createVertexArray()
 		this.use({
 			program: this.useProgram(programObj),
 			VAO: vao,
-			buffer: bufferInfo.buffer,
 		}).run(() => {
-			const attributes = bufferInfo.attributes
-			const stride = bufferInfo.stride || this._calcStride(attributes)
-			let offset = 0
-			bufferInfo.attributes.forEach(({ name, unit, size }) => {
-				const loc = this.aLoc(name)
-				const type = this.UnitMap[unit].type
-				this.gl.vertexAttribPointer(loc, size, type, false, stride, offset)
-				this.gl.enableVertexAttribArray(loc)
-				offset += size * this.UnitMap[unit].size
+			bufferInfos.forEach((bufferInfo) => {
+				this.useBuffer(bufferInfo.buffer, () => {
+					const attributes = bufferInfo.attributes
+					const stride = bufferInfo.stride || this._calcStride(attributes)
+					const divisor = bufferInfo.divisor
+					let offset = 0
+					attributes.forEach(({ name, unit, size }) => {
+						const loc = this.aLoc(name)
+						const type = this.UnitMap[unit].type
+						this.gl.vertexAttribPointer(loc, size, type, false, stride, offset)
+						this.gl.enableVertexAttribArray(loc)
+						offset += size * this.UnitMap[unit].size
+
+						if (Number.isInteger(divisor) && divisor >= 0)
+							this.gl.vertexAttribDivisor(loc, divisor)
+					})
+				})
 			})
 		})
 		return vao
@@ -366,9 +385,14 @@ class Olon {
 		return vao
 	}
 
+	_checkUseAttribute(params) {
+		return Array.isArray(params) && Object.hasOwn(params[0], "name")
+	}
+
 	createVAO(programObj, params) {
-		if (Array.isArray(params)) return this._vaoByAttribute(programObj, params)
-		return this._vaoByBufferInfo(programObj, params)
+		if (this._checkUseAttribute(params))
+			return this._vaoByAttribute(programObj, params)
+		return this._vaoByBufferInfos(programObj, params)
 	}
 
 	bindVAO(vao) {
@@ -547,7 +571,7 @@ class Olon {
 	/////////////////////////////////////////////
 	// ATTRIBUTE ////////////////////////////////
 
-	setAttribute(name, data, unit, size) {
+	setAttribute(name, data, unit, size, divisor) {
 		const loc = this.aLoc(name)
 		const buffer = this.gl.createBuffer()
 		const type = this.UnitMap[unit].type
@@ -555,6 +579,8 @@ class Olon {
 			this.gl.bufferData(this.AB, data, this.gl.STATIC_DRAW)
 			this.gl.vertexAttribPointer(loc, size, type, false, 0, 0)
 			this.gl.enableVertexAttribArray(loc)
+			if (Number.isInteger(divisor) && divisor >= 0)
+				this.gl.vertexAttribDivisor(loc, divisor)
 		})
 		const bufferInfo = { buffer, loc, name, data, size }
 		this.bufferList[name] = bufferInfo
