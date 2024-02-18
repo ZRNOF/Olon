@@ -1,1 +1,7 @@
+node_modules
+
 TEST
+
+.vscode
+
+.parcel-cache
