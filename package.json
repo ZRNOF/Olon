@@ -1,15 +1,25 @@
 {
 	"name": "olon",
-	"version": "0.0.0",
+	"version": "0.1.0",
 	"description": "Lightweight WebGL2 Tools",
-	"main": "src/Olon.js",
+	"homepage": "https://github.com/ZRNOF/Orton",
 	"repository": {
 		"url": "https://github.com/ZRNOF/Olon"
 	},
-	"scripts": {},
+	"type": "module",
+	"source": "src/Olon.js",
+	"main": "dist/Olon.js",
+	"scripts": {
+		"watch": "parcel watch",
+		"build": "parcel build && npm run minify",
+		"minify": "terser -c -m --module -o dist/Olon.min.js dist/Olon.js"
+	},
 	"keywords": [
 		"WebGL2"
 	],
 	"author": "Zaron Chen",
-	"license": "MIT"
+	"license": "MIT",
+	"devDependencies": {
+		"parcel": "^2.11.0"
+	}
 }
