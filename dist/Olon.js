@@ -872,6 +872,30 @@ class $c11457d2050428cd$var$Olon {
     triangleFan(first, count) {
         this.gl.drawArrays(this.TRIANGLE_FAN, first, count);
     }
+    drawArraysInstanced(primMode, first, count, instanceCount) {
+        this.gl.drawArraysInstanced(primMode, first, count, instanceCount);
+    }
+    pointsInstanced(first, count, instanceCount) {
+        this.drawArraysInstanced(this.POINTS, first, count, instanceCount);
+    }
+    linesInstanced(first, count, instanceCount) {
+        this.drawArraysInstanced(this.LINES, first, count, instanceCount);
+    }
+    lineLoopInstanced(first, count, instanceCount) {
+        this.drawArraysInstanced(this.LINE_LOOP, first, count, instanceCount);
+    }
+    lineStripInstanced(first, count, instanceCount) {
+        this.drawArraysInstanced(this.LINE_STRIP, first, count, instanceCount);
+    }
+    trianglesInstanced(first, count, instanceCount) {
+        this.drawArraysInstanced(this.TRIANGLES, first, count, instanceCount);
+    }
+    triangleStripInstanced(first, count, instanceCount) {
+        this.drawArraysInstanced(this.TRIANGLE_STRIP, first, count, instanceCount);
+    }
+    triangleFanInstanced(first, count, instanceCount) {
+        this.drawArraysInstanced(this.TRIANGLE_FAN, first, count, instanceCount);
+    }
     /////////////////////////////////////////////
     // TEXTURE //////////////////////////////////
     _isDOMElement(texture) {
