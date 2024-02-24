@@ -1,8 +1,8 @@
 {
 	"name": "olon",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"description": "Lightweight WebGL2 Tools",
-	"homepage": "https://github.com/ZRNOF/Orton",
+	"homepage": "https://github.com/ZRNOF/Olon",
 	"repository": {
 		"url": "https://github.com/ZRNOF/Olon"
 	},
