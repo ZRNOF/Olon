@@ -1,10 +1,21 @@
+const loadImage = (src) =>
+	new Promise((resolve, reject) => {
+		const image = new Image()
+		image.addEventListener("load", () => resolve(image))
+		image.addEventListener("error", (error) => {
+			reject(new Error(`Error loading image from ${src}: ${error.message}`))
+		})
+		image.crossOrigin = "anonymous"
+		image.src = src
+	})
+
 const loadShader = async (path) => {
 	let shaderCode
 	try {
 		const response = await fetch(path)
 		if (!response.ok) throw new Error(`Failed to fetch ${path}`)
 		shaderCode = await response.text()
-		shaderCode = await processIncludes(shaderCode)
+		shaderCode = await _processIncludes(shaderCode)
 		return shaderCode
 	} catch (error) {
 		console.error(error)
@@ -12,7 +23,7 @@ const loadShader = async (path) => {
 	}
 }
 
-const processIncludes = async (shaderCode) => {
+const _processIncludes = async (shaderCode) => {
 	const includeRegex = /#include "(.+)"/g
 	const includePaths = []
 	let match
@@ -41,4 +52,4 @@ const processIncludes = async (shaderCode) => {
 	return shaderCode
 }
 
-export default loadShader
+export { loadImage, loadShader }
