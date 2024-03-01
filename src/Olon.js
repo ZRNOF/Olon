@@ -27,4 +27,5 @@ import Data from "./Data/Data.js"
 import { loadShader, loadImage } from "./Utils/load.js"
 
 export { loadShader, loadImage, Data }
-export default (width, height) => new Olon(width, height)
+export default (width, height, ATTACH_TO_2D) =>
+	new Olon(width, height, ATTACH_TO_2D)

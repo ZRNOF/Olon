@@ -219,7 +219,7 @@ var $37ab2d9e59ed849e$export$2e2bcd8739ae039 = $37ab2d9e59ed849e$var$Data;
 
 
 class $946b8ae9394ed0c3$var$Olon {
-    constructor(width = 300, height = 150){
+    constructor(width = 300, height = 150, ATTACH_TO_2D = false){
         this.frame = 0;
         this.seconds = 0;
         this.startTime = 0;
@@ -231,16 +231,14 @@ class $946b8ae9394ed0c3$var$Olon {
         this.mouseX = 0;
         this.mouseY = 0;
         this.bufferList = {};
+        this.ATTACH_TO_2D = ATTACH_TO_2D;
         this.canvas2D = null;
         this.o2D = null;
-        this.canvas = document.createElement("canvas");
-        [this.canvas.width, this.canvas.height] = [
-            width,
-            height
-        ];
-        this.canvas.id = "olon-canvas";
-        document.body.appendChild(this.canvas);
-        this.gl = this.canvas.getContext("webgl2");
+        this._initCanvas2D(width, height);
+        this.canvas = null;
+        this.gl = null;
+        this._initCanvas(width, height);
+        this._enableCanvas2D();
         this.program = null;
         this.canvas.addEventListener("mousemove", (e)=>this._mouseMove(e, this.canvas));
         this.canvas.addEventListener("touchmove", (e)=>this._touchMove(e, this.canvas));
@@ -339,18 +337,33 @@ class $946b8ae9394ed0c3$var$Olon {
             this.height = window.innerHeight - top * 2;
         });
     }
-    enableCanvas2D(color = "#000000") {
+    _initCanvas(width, height) {
+        this.canvas = document.createElement("canvas");
+        [this.canvas.width, this.canvas.height] = [
+            width,
+            height
+        ];
+        this.canvas.id = "olon-canvas";
+        document.body.appendChild(this.canvas);
+        this.gl = this.canvas.getContext("webgl2");
+        this.canvas.style.display = "block";
+    }
+    _initCanvas2D(width, height) {
+        if (!this.ATTACH_TO_2D) return;
         this.canvas2D = document.createElement("canvas");
         [this.canvas2D.width, this.canvas2D.height] = [
-            this.canvas.width,
-            this.canvas.height
+            width,
+            height
         ];
         this.canvas2D.id = "o2d";
         document.body.appendChild(this.canvas2D);
         this.o2D = this.canvas2D.getContext("2d");
-        this.o2D.fillStyle = color;
-        this.o2D.fillRect(0, 0, this.canvas2D.width, this.canvas2D.height);
+        this.canvas2D.style.display = "none";
+    }
+    _enableCanvas2D() {
+        if (!this.ATTACH_TO_2D) return;
         this.canvas.style.display = "none";
+        this.canvas2D.style.display = "block";
         this.canvas2D.addEventListener("mousemove", (e)=>this._mouseMove(e, this.canvas2D));
         this.canvas2D.addEventListener("touchmove", (e)=>this._touchMove(e, this.canvas2D));
     }
@@ -1247,7 +1260,7 @@ const $95a2ddbad6c62d80$var$_processIncludes = async (shaderCode)=>{
 };
 
 
-var $c11457d2050428cd$export$2e2bcd8739ae039 = (width, height)=>new (0, $946b8ae9394ed0c3$export$2e2bcd8739ae039)(width, height);
+var $c11457d2050428cd$export$2e2bcd8739ae039 = (width, height, ATTACH_TO_2D)=>new (0, $946b8ae9394ed0c3$export$2e2bcd8739ae039)(width, height, ATTACH_TO_2D);
 
 
 export {$c11457d2050428cd$export$2e2bcd8739ae039 as default, $95a2ddbad6c62d80$export$83674196993caf59 as loadShader, $95a2ddbad6c62d80$export$fe58198efe02b173 as loadImage, $37ab2d9e59ed849e$export$2e2bcd8739ae039 as Data};
