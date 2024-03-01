@@ -2,11 +2,9 @@
 
 [![NPM Package][npm]][npm-url]
 
-Lightweight WebGL2 Tools
+Lightweight WebGL2 Tools.
 
 # 🚧 🚧 🚧
-
-Please note that this library is still under development, extremely unstable, and the code is pending refactoring.
 
 ## License
 
