@@ -1,223 +1,3 @@
-// ref: https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/Constants
-// prettier - ignore
-const $02940fab21ed14c4$export$2947cebfe91c02f8 = (gl)=>({
-        5126: (loc, data)=>gl.uniform1f(loc, data),
-        35664: (loc, data)=>gl.uniform2fv(loc, data),
-        35665: (loc, data)=>gl.uniform3fv(loc, data),
-        35666: (loc, data)=>gl.uniform4fv(loc, data),
-        5124: (loc, data)=>gl.uniform1i(loc, data),
-        35667: (loc, data)=>gl.uniform2iv(loc, data),
-        35668: (loc, data)=>gl.uniform3iv(loc, data),
-        35669: (loc, data)=>gl.uniform4iv(loc, data),
-        // check
-        35670: (loc, data)=>gl.uniform1i(loc, data),
-        35671: (loc, data)=>gl.uniform2iv(loc, data),
-        35672: (loc, data)=>gl.uniform3iv(loc, data),
-        35673: (loc, data)=>gl.uniform4iv(loc, data),
-        // check
-        35674: (loc, data)=>gl.uniformMatrix2fv(loc, false, data),
-        35675: (loc, data)=>gl.uniformMatrix3fv(loc, false, data),
-        35676: (loc, data)=>gl.uniformMatrix4fv(loc, false, data),
-        5125: (loc, data)=>gl.uniform1u(loc, data),
-        36294: (loc, data)=>gl.uniform2uv(loc, data),
-        36295: (loc, data)=>gl.uniform3uv(loc, data),
-        36296: (loc, data)=>gl.uniform4uv(loc, data),
-        // 35680: (loc, data) => gl.uniform1i(loc, data), // this.gl.SAMPLER_CUBE,
-        35678: (loc, data)=>gl.uniform1i(loc, data),
-        35679: (loc, data)=>gl.uniform1i(loc, data),
-        35682: (loc, data)=>gl.uniform1i(loc, data),
-        36289: (loc, data)=>gl.uniform1i(loc, data),
-        36292: (loc, data)=>gl.uniform1i(loc, data),
-        36293: (loc, data)=>gl.uniform1i(loc, data)
-    });
-const $02940fab21ed14c4$export$8a7d022a149eff7d = new Set([
-    35680,
-    35678,
-    35679,
-    35682,
-    36289,
-    36292,
-    36293
-]);
-const $02940fab21ed14c4$export$1d8b9ae22d404866 = {
-    i8: {
-        size: 1,
-        type: 0x1400
-    },
-    i16: {
-        size: 2,
-        type: 0x1402
-    },
-    i32: {
-        size: 4,
-        type: 0x1404
-    },
-    u8: {
-        size: 1,
-        type: 0x1401
-    },
-    u16: {
-        size: 2,
-        type: 0x1403
-    },
-    u32: {
-        size: 4,
-        type: 0x1405
-    },
-    f32: {
-        size: 4,
-        type: 0x1406
-    }
-};
-const $02940fab21ed14c4$export$2d3ea16026ded2be = {
-    Int8Array: "i8",
-    Int16Array: "i16",
-    Int32Array: "i32",
-    Uint8Array: "u8",
-    Uint16Array: "u16",
-    Uint32Array: "u32",
-    Float32Array: "f32"
-};
-const $02940fab21ed14c4$export$2d0294657ab35f1b = {
-    i8: Int8Array,
-    i16: Int16Array,
-    i32: Int32Array,
-    u8: Uint8Array,
-    u16: Uint16Array,
-    u32: Uint32Array,
-    f32: Float32Array
-};
-const $02940fab21ed14c4$export$2ec5cf480cc9c251 = {
-    6407: {
-        format: 0x1907,
-        type: 0x1401
-    },
-    /* RGB */ 6408: {
-        format: 0x1908,
-        type: 0x1401
-    },
-    /* RGBA */ 6410: {
-        format: 0x190a,
-        type: 0x1401
-    },
-    /* LUMINANCE_ALPHA */ 6409: {
-        format: 0x1909,
-        type: 0x1401
-    },
-    /* LUMINANCE */ 6406: {
-        format: 0x1906,
-        type: 0x1401
-    },
-    /* ALPHA */ 33321: {
-        format: 0x1903,
-        type: 0x1401
-    },
-    /* R8 */ 33325: {
-        format: 0x1903,
-        type: 0x1406
-    },
-    /* R16F */ 33326: {
-        format: 0x1903,
-        type: 0x1406
-    },
-    /* R32F */ 33330: {
-        format: 0x8d94,
-        type: 0x1401
-    },
-    /* R8UI */ 33323: {
-        format: 0x8227,
-        type: 0x1401
-    },
-    /* RG8 */ 33327: {
-        format: 0x8227,
-        type: 0x1406
-    },
-    /* RG16F */ 33328: {
-        format: 0x8227,
-        type: 0x1406
-    },
-    /* RG32F */ 33336: {
-        format: 0x8228,
-        type: 0x1401
-    },
-    /* RG8UI */ 32849: {
-        format: 0x1907,
-        type: 0x1401
-    },
-    /* RGB8 */ 35905: {
-        format: 0x1907,
-        type: 0x1401
-    },
-    /* SRGB8 */ 36194: {
-        format: 0x1907,
-        type: 0x1401
-    },
-    /* RGB565 */ 35898: {
-        format: 0x1907,
-        type: 0x1406
-    },
-    /* R11F_G11F_B10F */ 35901: {
-        format: 0x1907,
-        type: 0x1406
-    },
-    /* RGB9_E5 */ 34843: {
-        format: 0x1907,
-        type: 0x1406
-    },
-    /* RGB16F */ 34837: {
-        format: 0x1907,
-        type: 0x1406
-    },
-    /* RGB32F */ 36221: {
-        format: 0x8d98,
-        type: 0x1401
-    },
-    /* RGB8UI */ 32856: {
-        format: 0x1908,
-        type: 0x1401
-    },
-    /* RGBA8 */ 35907: {
-        format: 0x1908,
-        type: 0x1401
-    },
-    /* SRGB8_ALPHA8 */ 32855: {
-        format: 0x1908,
-        type: 0x1401
-    },
-    /* RGB5_A1 */ 32857: {
-        format: 0x1908,
-        type: 0x8368
-    },
-    /* RGB10_A2 */ 32854: {
-        format: 0x1908,
-        type: 0x1401
-    },
-    /* RGBA4 */ 34842: {
-        format: 0x1908,
-        type: 0x1406
-    },
-    /* RGBA16F */ 34836: {
-        format: 0x1908,
-        type: 0x1406
-    },
-    /* RGBA32F */ 36220: {
-        format: 0x8d99,
-        type: 0x1401
-    }
-};
-
-
-
-const $37ab2d9e59ed849e$export$45c69700ee30a78c = (data)=>data.constructor.name;
-const $37ab2d9e59ed849e$var$flat = (array)=>array.flat(Infinity);
-const $37ab2d9e59ed849e$var$Data = (data, type = "f32")=>{
-    if (Array.isArray(data)) return new $02940fab21ed14c4$export$2d0294657ab35f1b[type]($37ab2d9e59ed849e$var$flat(data));
-    if (typeof data === "number") return new $02940fab21ed14c4$export$2d0294657ab35f1b[type](data);
-    throw new Error("Unsupported data type");
-};
-var $37ab2d9e59ed849e$export$2e2bcd8739ae039 = $37ab2d9e59ed849e$var$Data;
-
-
 class $946b8ae9394ed0c3$var$Olon {
     constructor(width = 300, height = 150, ATTACH_TO_2D = false){
         this.frame = 0;
@@ -242,86 +22,9 @@ class $946b8ae9394ed0c3$var$Olon {
         this.program = null;
         this.canvas.addEventListener("mousemove", (e)=>this._mouseMove(e, this.canvas));
         this.canvas.addEventListener("touchmove", (e)=>this._touchMove(e, this.canvas));
-        this.UnitMap = $02940fab21ed14c4$export$1d8b9ae22d404866;
-        this.IFormatMap = $02940fab21ed14c4$export$2ec5cf480cc9c251;
-        this.UniformMap = $02940fab21ed14c4$export$2947cebfe91c02f8(this.gl);
     }
     /////////////////////////////////////////////
     // FEATURE //////////////////////////////////
-    sketchData() {
-        const positionData = (0, $37ab2d9e59ed849e$export$2e2bcd8739ae039)([
-            -1,
-            -1,
-            1,
-            -1,
-            1,
-            1,
-            1,
-            1,
-            -1,
-            1,
-            -1,
-            -1
-        ]);
-        const texCoordData = (0, $37ab2d9e59ed849e$export$2e2bcd8739ae039)([
-            0,
-            0,
-            1,
-            0,
-            1,
-            1,
-            1,
-            1,
-            0,
-            1,
-            0,
-            0
-        ]);
-        return {
-            positionData: positionData,
-            texCoordData: texCoordData
-        };
-    }
-    quadData() {
-        return (0, $37ab2d9e59ed849e$export$2e2bcd8739ae039)([
-            [
-                -1,
-                -1,
-                0,
-                0
-            ],
-            [
-                1,
-                -1,
-                1,
-                0
-            ],
-            [
-                1,
-                1,
-                1,
-                1
-            ],
-            [
-                1,
-                1,
-                1,
-                1
-            ],
-            [
-                -1,
-                1,
-                0,
-                1
-            ],
-            [
-                -1,
-                -1,
-                0,
-                0
-            ]
-        ]);
-    }
     sketch() {
         const { positionData: positionData, texCoordData: texCoordData } = this.sketchData();
         this.setAttribute("aPosition", positionData, "f32", 2);
@@ -668,6 +371,221 @@ var /////////////////////////////////////////////
 $853dbd9b9f7ae4ca$export$2e2bcd8739ae039 = (0, $946b8ae9394ed0c3$export$2e2bcd8739ae039);
 
 
+// ref: https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/Constants
+
+// prettier - ignore
+(0, $946b8ae9394ed0c3$export$2e2bcd8739ae039).prototype.UniformMap = {
+    5126: (gl, loc, data)=>gl.uniform1f(loc, data),
+    35664: (gl, loc, data)=>gl.uniform2fv(loc, data),
+    35665: (gl, loc, data)=>gl.uniform3fv(loc, data),
+    35666: (gl, loc, data)=>gl.uniform4fv(loc, data),
+    5124: (gl, loc, data)=>gl.uniform1i(loc, data),
+    35667: (gl, loc, data)=>gl.uniform2iv(loc, data),
+    35668: (gl, loc, data)=>gl.uniform3iv(loc, data),
+    35669: (gl, loc, data)=>gl.uniform4iv(loc, data),
+    // check
+    35670: (gl, loc, data)=>gl.uniform1i(loc, data),
+    35671: (gl, loc, data)=>gl.uniform2iv(loc, data),
+    35672: (gl, loc, data)=>gl.uniform3iv(loc, data),
+    35673: (gl, loc, data)=>gl.uniform4iv(loc, data),
+    // check
+    35674: (gl, loc, data)=>gl.uniformMatrix2fv(loc, false, data),
+    35675: (gl, loc, data)=>gl.uniformMatrix3fv(loc, false, data),
+    35676: (gl, loc, data)=>gl.uniformMatrix4fv(loc, false, data),
+    5125: (gl, loc, data)=>gl.uniform1u(loc, data),
+    36294: (gl, loc, data)=>gl.uniform2uv(loc, data),
+    36295: (gl, loc, data)=>gl.uniform3uv(loc, data),
+    36296: (gl, loc, data)=>gl.uniform4uv(loc, data),
+    // 35680: (gl, loc, data) => gl.uniform1i(loc, data), // this.gl.SAMPLER_CUBE,
+    35678: (gl, loc, data)=>gl.uniform1i(loc, data),
+    35679: (gl, loc, data)=>gl.uniform1i(loc, data),
+    35682: (gl, loc, data)=>gl.uniform1i(loc, data),
+    36289: (gl, loc, data)=>gl.uniform1i(loc, data),
+    36292: (gl, loc, data)=>gl.uniform1i(loc, data),
+    36293: (gl, loc, data)=>gl.uniform1i(loc, data)
+};
+(0, $946b8ae9394ed0c3$export$2e2bcd8739ae039).prototype.samplerTypes = new Set([
+    35680,
+    35678,
+    35679,
+    35682,
+    36289,
+    36292,
+    36293
+]);
+// prettier-ignore
+(0, $946b8ae9394ed0c3$export$2e2bcd8739ae039).prototype.UnitMap = {
+    i8: {
+        size: 1,
+        type: 0x1400
+    },
+    i16: {
+        size: 2,
+        type: 0x1402
+    },
+    i32: {
+        size: 4,
+        type: 0x1404
+    },
+    u8: {
+        size: 1,
+        type: 0x1401
+    },
+    u16: {
+        size: 2,
+        type: 0x1403
+    },
+    u32: {
+        size: 4,
+        type: 0x1405
+    },
+    f32: {
+        size: 4,
+        type: 0x1406
+    }
+};
+// prettier-ignore
+(0, $946b8ae9394ed0c3$export$2e2bcd8739ae039).prototype.TypeArrayUnit = {
+    Int8Array: "i8",
+    Int16Array: "i16",
+    Int32Array: "i32",
+    Uint8Array: "u8",
+    Uint16Array: "u16",
+    Uint32Array: "u32",
+    Float32Array: "f32"
+};
+// prettier-ignore
+(0, $946b8ae9394ed0c3$export$2e2bcd8739ae039).prototype.DataMap = {
+    i8: Int8Array,
+    i16: Int16Array,
+    i32: Int32Array,
+    u8: Uint8Array,
+    u16: Uint16Array,
+    u32: Uint32Array,
+    f32: Float32Array
+};
+// prettier-ignore
+(0, $946b8ae9394ed0c3$export$2e2bcd8739ae039).prototype.IFormatMap = {
+    6407: {
+        format: 0x1907,
+        type: 0x1401
+    },
+    /* RGB */ 6408: {
+        format: 0x1908,
+        type: 0x1401
+    },
+    /* RGBA */ 6410: {
+        format: 0x190a,
+        type: 0x1401
+    },
+    /* LUMINANCE_ALPHA */ 6409: {
+        format: 0x1909,
+        type: 0x1401
+    },
+    /* LUMINANCE */ 6406: {
+        format: 0x1906,
+        type: 0x1401
+    },
+    /* ALPHA */ 33321: {
+        format: 0x1903,
+        type: 0x1401
+    },
+    /* R8 */ 33325: {
+        format: 0x1903,
+        type: 0x1406
+    },
+    /* R16F */ 33326: {
+        format: 0x1903,
+        type: 0x1406
+    },
+    /* R32F */ 33330: {
+        format: 0x8d94,
+        type: 0x1401
+    },
+    /* R8UI */ 33323: {
+        format: 0x8227,
+        type: 0x1401
+    },
+    /* RG8 */ 33327: {
+        format: 0x8227,
+        type: 0x1406
+    },
+    /* RG16F */ 33328: {
+        format: 0x8227,
+        type: 0x1406
+    },
+    /* RG32F */ 33336: {
+        format: 0x8228,
+        type: 0x1401
+    },
+    /* RG8UI */ 32849: {
+        format: 0x1907,
+        type: 0x1401
+    },
+    /* RGB8 */ 35905: {
+        format: 0x1907,
+        type: 0x1401
+    },
+    /* SRGB8 */ 36194: {
+        format: 0x1907,
+        type: 0x1401
+    },
+    /* RGB565 */ 35898: {
+        format: 0x1907,
+        type: 0x1406
+    },
+    /* R11F_G11F_B10F */ 35901: {
+        format: 0x1907,
+        type: 0x1406
+    },
+    /* RGB9_E5 */ 34843: {
+        format: 0x1907,
+        type: 0x1406
+    },
+    /* RGB16F */ 34837: {
+        format: 0x1907,
+        type: 0x1406
+    },
+    /* RGB32F */ 36221: {
+        format: 0x8d98,
+        type: 0x1401
+    },
+    /* RGB8UI */ 32856: {
+        format: 0x1908,
+        type: 0x1401
+    },
+    /* RGBA8 */ 35907: {
+        format: 0x1908,
+        type: 0x1401
+    },
+    /* SRGB8_ALPHA8 */ 32855: {
+        format: 0x1908,
+        type: 0x1401
+    },
+    /* RGB5_A1 */ 32857: {
+        format: 0x1908,
+        type: 0x8368
+    },
+    /* RGB10_A2 */ 32854: {
+        format: 0x1908,
+        type: 0x1401
+    },
+    /* RGBA4 */ 34842: {
+        format: 0x1908,
+        type: 0x1406
+    },
+    /* RGBA16F */ 34836: {
+        format: 0x1908,
+        type: 0x1406
+    },
+    /* RGBA32F */ 36220: {
+        format: 0x8d99,
+        type: 0x1401
+    }
+};
+var $d4c17cdf169be816$export$2e2bcd8739ae039 = (0, $946b8ae9394ed0c3$export$2e2bcd8739ae039);
+
+
 
 (0, $946b8ae9394ed0c3$export$2e2bcd8739ae039).prototype._shader = function(programObj, source, type) {
     const shader = this.gl.createShader(type);
@@ -687,7 +605,6 @@ $853dbd9b9f7ae4ca$export$2e2bcd8739ae039 = (0, $946b8ae9394ed0c3$export$2e2bcd87
     this.useProgram(this.program);
 };
 var $43da7bd4590e1e2d$export$2e2bcd8739ae039 = (0, $946b8ae9394ed0c3$export$2e2bcd8739ae039);
-
 
 
 
@@ -726,7 +643,7 @@ var $43da7bd4590e1e2d$export$2e2bcd8739ae039 = (0, $946b8ae9394ed0c3$export$2e2b
     for(let i = 0; i < numUniforms; ++i){
         const { name: name, type: type, size: size } = this._getActiveUniform(programObj, i);
         this._updateProgramUniforms(programObj, name, type, size);
-        if ($02940fab21ed14c4$export$8a7d022a149eff7d.has(type)) this._setTexUnit(name);
+        if (this.samplerTypes.has(type)) this._setTexUnit(name);
     }
     return programObj;
 };
@@ -872,7 +789,7 @@ $9984c1f5349d00f7$export$2e2bcd8739ae039 = (0, $946b8ae9394ed0c3$export$2e2bcd87
         return;
     }
     const loc = this.uLoc(name);
-    this.UniformMap[info.type](loc, data);
+    this.UniformMap[info.type](this.gl, loc, data);
 };
 (0, $946b8ae9394ed0c3$export$2e2bcd8739ae039).prototype.initUniform = function(uniformInfos) {
     const uniforms = {};
@@ -1057,7 +974,6 @@ var $503b1c9377eba4c0$export$2e2bcd8739ae039 = (0, $946b8ae9394ed0c3$export$2e2b
 
 
 
-
 (0, $946b8ae9394ed0c3$export$2e2bcd8739ae039).prototype._calcStride = function(attributes) {
     return attributes.reduce((acc, { unit: unit, size: size })=>{
         return acc + size * this.UnitMap[unit].size;
@@ -1096,7 +1012,7 @@ var $503b1c9377eba4c0$export$2e2bcd8739ae039 = (0, $946b8ae9394ed0c3$export$2e2b
     const vao = this.gl.createVertexArray();
     this.useVAO(vao, ()=>{
         attributes.forEach(({ name: name, data: data, size: size })=>{
-            const unit = $02940fab21ed14c4$export$2d3ea16026ded2be[data.constructor.name];
+            const unit = this.TypeArrayUnit[data.constructor.name];
             this.setAttribute(name, data, unit, size);
         });
     });
@@ -1216,6 +1132,96 @@ var $1c5e6c2187b397c9$export$2e2bcd8739ae039 = (0, $946b8ae9394ed0c3$export$2e2b
 
 
 
+const $ac8b0d1d0dee5f4b$var$flat = (array)=>array.flat(Infinity);
+(0, $946b8ae9394ed0c3$export$2e2bcd8739ae039).prototype.DataType = function(data) {
+    return data.constructor.name;
+};
+(0, $946b8ae9394ed0c3$export$2e2bcd8739ae039).prototype.Data = function(data, type = "f32") {
+    if (Array.isArray(data)) return new this.DataMap[type]($ac8b0d1d0dee5f4b$var$flat(data));
+    if (typeof data === "number") return new this.DataMap[type](data);
+    throw new Error("Unsupported data type");
+};
+var $ac8b0d1d0dee5f4b$export$2e2bcd8739ae039 = (0, $946b8ae9394ed0c3$export$2e2bcd8739ae039);
+
+
+
+(0, $946b8ae9394ed0c3$export$2e2bcd8739ae039).prototype.quadData = function() {
+    return this.Data([
+        [
+            -1,
+            -1,
+            0,
+            0
+        ],
+        [
+            1,
+            -1,
+            1,
+            0
+        ],
+        [
+            1,
+            1,
+            1,
+            1
+        ],
+        [
+            1,
+            1,
+            1,
+            1
+        ],
+        [
+            -1,
+            1,
+            0,
+            1
+        ],
+        [
+            -1,
+            -1,
+            0,
+            0
+        ]
+    ]);
+};
+(0, $946b8ae9394ed0c3$export$2e2bcd8739ae039).prototype.sketchData = function() {
+    const positionData = this.Data([
+        -1,
+        -1,
+        1,
+        -1,
+        1,
+        1,
+        1,
+        1,
+        -1,
+        1,
+        -1,
+        -1
+    ]);
+    const texCoordData = this.Data([
+        0,
+        0,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        0,
+        0
+    ]);
+    return {
+        positionData: positionData,
+        texCoordData: texCoordData
+    };
+};
+var $5481d34f094151f3$export$2e2bcd8739ae039 = (0, $946b8ae9394ed0c3$export$2e2bcd8739ae039);
+
+
 const $95a2ddbad6c62d80$export$fe58198efe02b173 = (src)=>new Promise((resolve, reject)=>{
         const image = new Image();
         image.addEventListener("load", ()=>resolve(image));
@@ -1263,5 +1269,5 @@ const $95a2ddbad6c62d80$var$_processIncludes = async (shaderCode)=>{
 var $c11457d2050428cd$export$2e2bcd8739ae039 = (width, height, ATTACH_TO_2D)=>new (0, $946b8ae9394ed0c3$export$2e2bcd8739ae039)(width, height, ATTACH_TO_2D);
 
 
-export {$c11457d2050428cd$export$2e2bcd8739ae039 as default, $95a2ddbad6c62d80$export$83674196993caf59 as loadShader, $95a2ddbad6c62d80$export$fe58198efe02b173 as loadImage, $37ab2d9e59ed849e$export$2e2bcd8739ae039 as Data};
+export {$c11457d2050428cd$export$2e2bcd8739ae039 as default, $95a2ddbad6c62d80$export$83674196993caf59 as loadShader, $95a2ddbad6c62d80$export$fe58198efe02b173 as loadImage};
 //# sourceMappingURL=Olon.js.map
