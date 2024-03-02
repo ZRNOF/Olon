@@ -1,5 +1,4 @@
 import * as TypeMaps from "../Data/TypeMaps.js"
-import Data from "../Data/Data.js"
 
 class Olon {
 	constructor(width = 300, height = 150, ATTACH_TO_2D = false) {
@@ -44,23 +43,6 @@ class Olon {
 
 	/////////////////////////////////////////////
 	// FEATURE //////////////////////////////////
-
-	sketchData() {
-		const positionData = Data([-1, -1, 1, -1, 1, 1, 1, 1, -1, 1, -1, -1])
-		const texCoordData = Data([0, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 0])
-		return { positionData, texCoordData }
-	}
-
-	quadData() {
-		return Data([
-			[-1, -1, 0, 0],
-			[1, -1, 1, 0],
-			[1, 1, 1, 1],
-			[1, 1, 1, 1],
-			[-1, 1, 0, 1],
-			[-1, -1, 0, 0],
-		])
-	}
 
 	sketch() {
 		const { positionData, texCoordData } = this.sketchData()
