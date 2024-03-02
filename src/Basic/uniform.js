@@ -18,7 +18,7 @@ Olon.prototype.uniform = function (name, data) {
 	}
 
 	const loc = this.uLoc(name)
-	this.UniformMap[info.type](loc, data)
+	this.UniformMap[info.type](this.gl, loc, data)
 }
 
 Olon.prototype.initUniform = function (uniformInfos) {

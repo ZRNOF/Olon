@@ -1,5 +1,3 @@
-import * as TypeMaps from "../Data/TypeMaps.js"
-
 class Olon {
 	constructor(width = 300, height = 150, ATTACH_TO_2D = false) {
 		this.frame = 0
@@ -35,10 +33,6 @@ class Olon {
 		this.canvas.addEventListener("touchmove", (e) =>
 			this._touchMove(e, this.canvas)
 		)
-
-		this.UnitMap = TypeMaps.Unit
-		this.IFormatMap = TypeMaps.IFormat
-		this.UniformMap = TypeMaps.Uniform(this.gl)
 	}
 
 	/////////////////////////////////////////////

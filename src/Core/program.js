@@ -1,5 +1,4 @@
 import Olon from "./main.js"
-import * as TypeMaps from "../Data/TypeMaps.js"
 
 Olon.prototype.setProgram = function (programObj) {
 	this.program = programObj
@@ -48,7 +47,7 @@ Olon.prototype.createProgram = function (vsList, fsList, tfVaryings) {
 	for (let i = 0; i < numUniforms; ++i) {
 		const { name, type, size } = this._getActiveUniform(programObj, i)
 		this._updateProgramUniforms(programObj, name, type, size)
-		if (TypeMaps.samplerTypes.has(type)) this._setTexUnit(name)
+		if (this.samplerTypes.has(type)) this._setTexUnit(name)
 	}
 	return programObj
 }

@@ -1,5 +1,4 @@
 import Olon from "../Core/main.js"
-import * as TypeMaps from "../Data/TypeMaps.js"
 
 Olon.prototype._calcStride = function (attributes) {
 	return attributes.reduce((acc, { unit, size }) => {
@@ -41,7 +40,7 @@ Olon.prototype._vaoByAttribute = function (programObj, attributes) {
 	const vao = this.gl.createVertexArray()
 	this.useVAO(vao, () => {
 		attributes.forEach(({ name, data, size }) => {
-			const unit = TypeMaps.TypeArrayUnit[data.constructor.name]
+			const unit = this.TypeArrayUnit[data.constructor.name]
 			this.setAttribute(name, data, unit, size)
 		})
 	})
