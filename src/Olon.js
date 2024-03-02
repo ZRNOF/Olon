@@ -1,5 +1,6 @@
 import Olon from "./Core/main.js"
 import "./Core/constants.js"
+import "./Core/typeMaps.js"
 import "./Core/shader.js"
 import "./Core/program.js"
 import "./Core/buffer.js"
@@ -23,9 +24,11 @@ import "./RBO/depthBuffer.js"
 
 import "./TransformFeedback/transformFeedback.js"
 
-import Data from "./Data/Data.js"
+import "./Data/data.js"
+import "./Data/vertices.js"
+
 import { loadShader, loadImage } from "./Utils/load.js"
 
-export { loadShader, loadImage, Data }
+export { loadShader, loadImage }
 export default (width, height, ATTACH_TO_2D) =>
 	new Olon(width, height, ATTACH_TO_2D)
