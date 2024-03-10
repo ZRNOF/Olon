@@ -587,6 +587,22 @@ var $d4c17cdf169be816$export$2e2bcd8739ae039 = (0, $946b8ae9394ed0c3$export$2e2b
 
 
 
+(0, $946b8ae9394ed0c3$export$2e2bcd8739ae039).prototype.enableExtensions = function(reqExt) {
+    const unsExt = reqExt.filter((ext)=>!this.gl.getExtension(ext));
+    if (unsExt.length === 0) return true;
+    console.warn("enableFloat: The following extensions are not supported:", unsExt.join(", "));
+    return unsExt;
+};
+(0, $946b8ae9394ed0c3$export$2e2bcd8739ae039).prototype.enableFloat = function() {
+    this.enableExtensions([
+        "EXT_color_buffer_float",
+        "OES_texture_float_linear"
+    ]);
+};
+var $6973175316e650a7$export$2e2bcd8739ae039 = (0, $946b8ae9394ed0c3$export$2e2bcd8739ae039);
+
+
+
 (0, $946b8ae9394ed0c3$export$2e2bcd8739ae039).prototype._shader = function(programObj, source, type) {
     const shader = this.gl.createShader(type);
     if (!/#version 300 es/.test(source)) source = `#version 300 es\n${source}`;
@@ -892,9 +908,9 @@ var $15866b735a3728d6$export$2e2bcd8739ae039 = (0, $946b8ae9394ed0c3$export$2e2b
 (0, $946b8ae9394ed0c3$export$2e2bcd8739ae039).prototype._isDOMElement = function(texture) {
     return texture instanceof HTMLElement ? true : false;
 };
-(0, $946b8ae9394ed0c3$export$2e2bcd8739ae039).prototype.setTexParameter = function(wrapX, wrapY, minFilter, magFilter) {
-    this.gl.texParameteri(this.T2D, this.gl.TEXTURE_WRAP_S, wrapX);
-    this.gl.texParameteri(this.T2D, this.gl.TEXTURE_WRAP_T, wrapY);
+(0, $946b8ae9394ed0c3$export$2e2bcd8739ae039).prototype.setTexParameter = function(wrapS, wrapT, minFilter, magFilter) {
+    this.gl.texParameteri(this.T2D, this.gl.TEXTURE_WRAP_S, wrapS);
+    this.gl.texParameteri(this.T2D, this.gl.TEXTURE_WRAP_T, wrapT);
     this.gl.texParameteri(this.T2D, this.gl.TEXTURE_MIN_FILTER, minFilter);
     this.gl.texParameteri(this.T2D, this.gl.TEXTURE_MAG_FILTER, magFilter);
 };
@@ -909,64 +925,77 @@ var $15866b735a3728d6$export$2e2bcd8739ae039 = (0, $946b8ae9394ed0c3$export$2e2b
     callback();
     this.unbindTexture2D();
 };
-(0, $946b8ae9394ed0c3$export$2e2bcd8739ae039).prototype.emptyTexture2D = function(width, height, iformat, { minFilter: minFilter = this.NML, magFilter: magFilter = this.LINEAR, filter: filter, wrapX: wrapX = this.REPEAT, wrapY: wrapY = this.REPEAT, wrap: wrap, flipY: flipY = false } = {}) {
+(0, $946b8ae9394ed0c3$export$2e2bcd8739ae039).prototype._emptyTexStorage2D = function({ width: width = this.width, height: height = this.height, iformat: iformat, minFilter: minFilter = this.LINEAR, magFilter: magFilter = this.LINEAR, filter: filter, wrapS: wrapS = this.REPEAT, wrapT: wrapT = this.REPEAT, wrap: wrap, flipY: flipY = false } = {}) {
+    if (!iformat) throw "_emptyTexStorage2D: Please specify iformat (internalformat).";
     if (filter) [minFilter, magFilter] = [
         filter,
         filter
     ];
-    if (wrap) [wrapX, wrapY] = [
+    if (wrap) [wrapS, wrapT] = [
         wrap,
         wrap
     ];
     const texture = this.gl.createTexture();
     this.useTexture2D(texture, ()=>{
         this.gl.pixelStorei(this.gl.UNPACK_FLIP_Y_WEBGL, flipY);
-        this.setTexParameter(wrapX, wrapY, minFilter, magFilter);
+        this.setTexParameter(wrapS, wrapT, minFilter, magFilter);
         this.gl.texStorage2D(this.T2D, 1, iformat, width, height);
     });
     return texture;
 };
-(0, $946b8ae9394ed0c3$export$2e2bcd8739ae039).prototype.texture2D = function({ data: data = null, iformat: iformat, level: level = 0, width: width, height: height, minFilter: minFilter = this.NML, magFilter: magFilter = this.LINEAR, filter: filter, wrapX: wrapX = this.REPEAT, wrapY: wrapY = this.REPEAT, wrap: wrap, flipY: flipY = this._isDOMElement(data) } = {
-    data: data,
-    iformat: iformat,
-    level: level,
-    width: width,
-    height: height,
-    minFilter: minFilter,
-    magFilter: magFilter,
-    filter: filter,
-    wrapX: wrapX,
-    wrapY: wrapY,
-    wrap: wrap,
-    flipY: flipY
-}) {
-    if (!width) width = data?.width;
-    if (!height) height = data?.height;
-    if (!width) throw "Please specify width.";
-    if (!height) throw "Please specify height.";
+(0, $946b8ae9394ed0c3$export$2e2bcd8739ae039).prototype._emptyTexImage2D = function({ width: width = this.width, height: height = this.height, iformat: iformat, minFilter: minFilter = this.LINEAR, magFilter: magFilter = this.LINEAR, filter: filter, wrapS: wrapS = this.REPEAT, wrapT: wrapT = this.REPEAT, wrap: wrap, flipY: flipY = false } = {}) {
+    if (!iformat) throw "_emptyTexImage2D: Please specify iformat (internalformat).";
     if (filter) [minFilter, magFilter] = [
         filter,
         filter
     ];
-    if (wrap) [wrapX, wrapY] = [
+    if (wrap) [wrapS, wrapT] = [
         wrap,
         wrap
     ];
-    // create empty texture
-    // prettier-ignore
-    if (!data) return this.emptyTexture2D(width, height, {
-        minFilter: minFilter,
-        magFilter: magFilter,
-        wrapX: wrapX,
-        wrapY: wrapY
+    const { format: format, type: type } = this.IFormatMap[iformat];
+    const texture = this.gl.createTexture();
+    this.useTexture2D(texture, ()=>{
+        this.gl.pixelStorei(this.gl.UNPACK_FLIP_Y_WEBGL, flipY);
+        this.setTexParameter(wrapS, wrapT, minFilter, magFilter);
+        this.gl.texImage2D(this.T2D, 0, iformat, width, height, 0, format, type, null);
     });
+    return texture;
+};
+(0, $946b8ae9394ed0c3$export$2e2bcd8739ae039).prototype.texture2D = function({ data: data = null, iformat: iformat, level: level = 0, width: width = data?.width || this.width, height: height = data?.height || this.height, minFilter: minFilter = this.LINEAR, magFilter: magFilter = this.LINEAR, filter: filter, wrapS: wrapS = this.REPEAT, wrapT: wrapT = this.REPEAT, wrap: wrap, flipY: flipY = this._isDOMElement(data), immutableStorage: immutableStorage = false } = {}) {
+    if (!iformat) throw "texture2D: Please specify iformat (internalformat).";
+    // create empty texture
+    if (!data) {
+        // prettier-ignore
+        const options = {
+            width: width,
+            height: height,
+            iformat: iformat,
+            minFilter: minFilter,
+            magFilter: magFilter,
+            filter: filter,
+            wrapS: wrapS,
+            wrapT: wrapT,
+            wrap: wrap,
+            flipY: flipY
+        };
+        return immutableStorage ? this._emptyTexStorage2D(options) : this._emptyTexImage2D(options);
+    }
+    if (filter) [minFilter, magFilter] = [
+        filter,
+        filter
+    ];
+    if (wrap) [wrapS, wrapT] = [
+        wrap,
+        wrap
+    ];
     const { format: format, type: type } = this.IFormatMap[iformat];
     const texture = this.gl.createTexture();
     this.gl.bindTexture(this.T2D, texture);
     this.gl.pixelStorei(this.gl.UNPACK_FLIP_Y_WEBGL, flipY);
     this.gl.texImage2D(this.T2D, level, iformat, width, height, 0, format, type, data);
     this.gl.generateMipmap(this.T2D);
-    this.setTexParameter(wrapX, wrapY, minFilter, magFilter);
+    this.setTexParameter(wrapS, wrapT, minFilter, magFilter);
     this.gl.bindTexture(this.T2D, null);
     return texture;
 };

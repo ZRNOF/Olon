@@ -1,6 +1,7 @@
 import Olon from "./Core/main.js"
 import "./Core/constants.js"
 import "./Core/typeMaps.js"
+import "./Core/extension.js"
 import "./Core/shader.js"
 import "./Core/program.js"
 import "./Core/buffer.js"
