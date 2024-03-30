@@ -7,11 +7,19 @@ Olon.prototype._getActiveUniforms = function (programObj) {
 	)
 }
 
-Olon.prototype.uniform = function (name, data) {
+Olon.prototype.uniform = function (name, data, updateTex) {
 	const info = this.program.uniforms[name]
 	if (!info) return
 
 	if (Object.hasOwn(this.program.texUnitList, name)) {
+		if (updateTex instanceof HTMLVideoElement) {
+			if (updateTex.readyState !== updateTex.HAVE_ENOUGH_DATA) return
+			const iformat = this.RGBA
+			const { format, type } = this.IFormatMap[iformat]
+			this.gl.activeTexture(this.gl.TEXTURE0 + this.program.texUnitList[name])
+			this.gl.bindTexture(this.T2D, data)
+			this.gl.texImage2D(this.T2D, 0, iformat, format, type, updateTex)
+		}
 		this.gl.activeTexture(this.gl.TEXTURE0 + this.program.texUnitList[name])
 		this.gl.bindTexture(this.T2D, data)
 		return
