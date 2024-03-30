@@ -28,6 +28,10 @@ import "./TransformFeedback/transformFeedback.js"
 import "./Data/data.js"
 import "./Data/vertices.js"
 
+/////////////////////////////////////////////
+// REVIEW ///////////////////////////////////
+import "./Flex/flex.js"
+
 import { loadShader, loadImage, loadWebcam } from "./Utils/load.js"
 
 export { loadShader, loadImage, loadWebcam }
