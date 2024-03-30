@@ -10,6 +10,7 @@ class $946b8ae9394ed0c3$var$Olon {
         this.oMouseY = 0;
         this.mouseX = 0;
         this.mouseY = 0;
+        this.isLooping = true;
         this.bufferList = {};
         this.ATTACH_TO_2D = ATTACH_TO_2D;
         this.canvas2D = null;
@@ -80,7 +81,16 @@ class $946b8ae9394ed0c3$var$Olon {
             renderFunc();
             if (this.canvas2D) this.o2D.drawImage(this.canvas, 0, 0);
             this.lastFrameTime = this.currentTime;
+            this.isLooping && requestAnimationFrame(animate);
+        };
+        this.pause = ()=>this.isLooping = false;
+        this.play = ()=>{
+            this.isLooping = true;
             requestAnimationFrame(animate);
+        };
+        this.toggle = ()=>{
+            this.isLooping = !this.isLooping;
+            this.isLooping && requestAnimationFrame(animate);
         };
         this.startTime = performance.now();
         requestAnimationFrame(animate);
@@ -273,6 +283,16 @@ var $946b8ae9394ed0c3$export$2e2bcd8739ae039 = $946b8ae9394ed0c3$var$Olon;
 (0, $946b8ae9394ed0c3$export$2e2bcd8739ae039).prototype.MIN = 32775 // this.gl.MIN
 ;
 (0, $946b8ae9394ed0c3$export$2e2bcd8739ae039).prototype.MAX = 32776 // this.gl.MAX
+;
+/////////////////////////////////////////////
+/////////////////////////////////////////////
+(0, $946b8ae9394ed0c3$export$2e2bcd8739ae039).prototype.FRONT = 1028 // this.gl.FRONT
+;
+(0, $946b8ae9394ed0c3$export$2e2bcd8739ae039).prototype.BACK = 1029 // this.gl.BACK
+;
+(0, $946b8ae9394ed0c3$export$2e2bcd8739ae039).prototype.FRONT_AND_BACK = 1032 // this.gl.FRONT_AND_BACK
+;
+(0, $946b8ae9394ed0c3$export$2e2bcd8739ae039).prototype.ALL = 1032 // this.gl.FRONT_AND_BACK
 ;
 /////////////////////////////////////////////
 // BLEND FACTOR /////////////////////////////
@@ -796,10 +816,18 @@ $9984c1f5349d00f7$export$2e2bcd8739ae039 = (0, $946b8ae9394ed0c3$export$2e2bcd87
 (0, $946b8ae9394ed0c3$export$2e2bcd8739ae039).prototype._getActiveUniforms = function(programObj) {
     return this.gl.getProgramParameter(programObj.program, this.gl.ACTIVE_UNIFORMS);
 };
-(0, $946b8ae9394ed0c3$export$2e2bcd8739ae039).prototype.uniform = function(name, data) {
+(0, $946b8ae9394ed0c3$export$2e2bcd8739ae039).prototype.uniform = function(name, data, updateTex) {
     const info = this.program.uniforms[name];
     if (!info) return;
     if (Object.hasOwn(this.program.texUnitList, name)) {
+        if (updateTex instanceof HTMLVideoElement) {
+            if (updateTex.readyState !== updateTex.HAVE_ENOUGH_DATA) return;
+            const iformat = this.RGBA;
+            const { format: format, type: type } = this.IFormatMap[iformat];
+            this.gl.activeTexture(this.gl.TEXTURE0 + this.program.texUnitList[name]);
+            this.gl.bindTexture(this.T2D, data);
+            this.gl.texImage2D(this.T2D, 0, iformat, format, type, updateTex);
+        }
         this.gl.activeTexture(this.gl.TEXTURE0 + this.program.texUnitList[name]);
         this.gl.bindTexture(this.T2D, data);
         return;
@@ -883,6 +911,19 @@ var $d26b4503f0fff045$export$2e2bcd8739ae039 = (0, $946b8ae9394ed0c3$export$2e2b
     this.gl.disable(this.gl.DEPTH_TEST);
 };
 var $9dd9dbf73e06b857$export$2e2bcd8739ae039 = (0, $946b8ae9394ed0c3$export$2e2bcd8739ae039);
+
+
+
+(0, $946b8ae9394ed0c3$export$2e2bcd8739ae039).prototype.enableCulling = function() {
+    this.gl.enable(this.gl.CULL_FACE);
+};
+(0, $946b8ae9394ed0c3$export$2e2bcd8739ae039).prototype.disableCulling = function() {
+    this.gl.disable(this.gl.CULL_FACE);
+};
+(0, $946b8ae9394ed0c3$export$2e2bcd8739ae039).prototype.cull = function(mode) {
+    this.gl.cullFace(mode);
+};
+var $62378e3cfcb9442f$export$2e2bcd8739ae039 = (0, $946b8ae9394ed0c3$export$2e2bcd8739ae039);
 
 
 
@@ -1214,6 +1255,26 @@ var $ac8b0d1d0dee5f4b$export$2e2bcd8739ae039 = (0, $946b8ae9394ed0c3$export$2e2b
         ]
     ]);
 };
+/////////////////////////////////////////////
+// [*] REFACTOR /////////////////////////////
+(0, $946b8ae9394ed0c3$export$2e2bcd8739ae039).prototype.quadBufferInfo = function(positionName = "aPosition", texCoordName = "aTexCoord") {
+    return {
+        buffer: this.createBuffer(this.quadData(), this.STATIC_DRAW),
+        stride: 16,
+        attributes: [
+            {
+                name: positionName,
+                unit: "f32",
+                size: 2
+            },
+            {
+                name: texCoordName,
+                unit: "f32",
+                size: 2
+            }
+        ]
+    };
+};
 (0, $946b8ae9394ed0c3$export$2e2bcd8739ae039).prototype.sketchData = function() {
     const positionData = this.Data([
         -1,
@@ -1251,6 +1312,222 @@ var $ac8b0d1d0dee5f4b$export$2e2bcd8739ae039 = (0, $946b8ae9394ed0c3$export$2e2b
 var $5481d34f094151f3$export$2e2bcd8739ae039 = (0, $946b8ae9394ed0c3$export$2e2bcd8739ae039);
 
 
+
+/**
+ * Modified from p5.flex:
+ *   https://github.com/ZRNOF/p5.flex
+ *
+ * MIT License
+ * Copyright © 2024 Zaron
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */ (0, $946b8ae9394ed0c3$export$2e2bcd8739ae039).prototype.CONTAIN = "contain";
+(0, $946b8ae9394ed0c3$export$2e2bcd8739ae039).prototype.COVER = "cover";
+(0, $946b8ae9394ed0c3$export$2e2bcd8739ae039).prototype.FILL = "fill";
+(0, $946b8ae9394ed0c3$export$2e2bcd8739ae039).prototype.NONE = "none";
+(0, $946b8ae9394ed0c3$export$2e2bcd8739ae039).prototype.SCALE_DOWN = "scale_down";
+// common CSS style
+const $e45c2cbdae0ebc9e$var$RESET_BOX_MODEL = `padding: 0; margin: 0; border: 0;`;
+const $e45c2cbdae0ebc9e$var$FULL_SIZE = `width: 100%; height: 100%;`;
+const $e45c2cbdae0ebc9e$var$FLEX_CENTER = `display: flex; justify-content: center; align-items: center;`;
+const $e45c2cbdae0ebc9e$var$BORDER_BOX = `box-sizing: border-box;`;
+const $e45c2cbdae0ebc9e$var$STATIC = `position: static;`;
+const $e45c2cbdae0ebc9e$var$HIDDEN = `overflow: hidden;`;
+const $e45c2cbdae0ebc9e$var$BLOCK = `display: block;`;
+const $e45c2cbdae0ebc9e$var$__flexStyle__ = {
+    pageCSS: ()=>{
+        const html = document.documentElement;
+        const body = document.body;
+        html.className = "";
+        body.className = "";
+        html.style.cssText = $e45c2cbdae0ebc9e$var$RESET_BOX_MODEL + $e45c2cbdae0ebc9e$var$FULL_SIZE;
+        body.style.cssText = $e45c2cbdae0ebc9e$var$RESET_BOX_MODEL + $e45c2cbdae0ebc9e$var$FULL_SIZE + $e45c2cbdae0ebc9e$var$FLEX_CENTER;
+    },
+    containerCSS: (container, OPTIONS)=>{
+        let boxModel = "";
+        if (!OPTIONS.container.customBoxModel) boxModel = `
+				margin:  ${OPTIONS.container.margin} ;
+				padding: ${OPTIONS.container.padding};
+				border:  ${OPTIONS.container.border} ;
+			`;
+        container.style.cssText = `
+			max-width:  ${OPTIONS.container.width};
+			max-height: ${OPTIONS.container.height};
+			width:  ${OPTIONS.container.width};
+			height: ${OPTIONS.container.height};
+			${$e45c2cbdae0ebc9e$var$BORDER_BOX + $e45c2cbdae0ebc9e$var$FLEX_CENTER + boxModel}
+		`;
+    },
+    canvasScaleCSS: (OPTIONS)=>{
+        return `
+			max-width:  ${100 * OPTIONS.canvas.scale}%;
+			max-height: ${100 * OPTIONS.canvas.scale}%;
+		`;
+    },
+    // for COVER | NONE mode
+    innerContainerCSS: (innerContainer, OPTIONS)=>{
+        const scale = $e45c2cbdae0ebc9e$var$__flexStyle__.canvasScaleCSS(OPTIONS);
+        let style = scale + $e45c2cbdae0ebc9e$var$STATIC + $e45c2cbdae0ebc9e$var$FLEX_CENTER + $e45c2cbdae0ebc9e$var$HIDDEN;
+        if (OPTIONS.canvas.fit === "cover") style += $e45c2cbdae0ebc9e$var$FULL_SIZE;
+        innerContainer.style.cssText = style;
+    },
+    canvasCSS: (canvas, OPTIONS)=>{
+        const fit = OPTIONS.canvas.fit;
+        let fitStyle = $e45c2cbdae0ebc9e$var$__flexStyle__.canvasScaleCSS(OPTIONS);
+        if ([
+            "cover",
+            "none"
+        ].includes(fit)) fitStyle = "";
+        if (fit === "fill") fitStyle += $e45c2cbdae0ebc9e$var$FULL_SIZE;
+        canvas.style.cssText = `
+			${$e45c2cbdae0ebc9e$var$STATIC + $e45c2cbdae0ebc9e$var$RESET_BOX_MODEL + $e45c2cbdae0ebc9e$var$BORDER_BOX + fitStyle + $e45c2cbdae0ebc9e$var$BLOCK}
+		`;
+    }
+};
+// provide margin, padding, and border for the container
+// using .style to access padding is faster than using getComputedStyle
+//
+// in default mode (customBoxModel === false), users cannot use percentage in padding
+// because it requires computing the padding value every time the container is resized or the aspect ratio changes
+//
+// setting customBoxModel to true allows user to use sheet style, but it will use getComputedStyle
+// in this mode, users can use percentage in padding
+const $e45c2cbdae0ebc9e$var$DEFAULT_OPTIONS = {
+    container: {
+        id: undefined,
+        parent: undefined,
+        width: "100%",
+        height: "100%",
+        margin: "0",
+        padding: "0",
+        border: "0",
+        customBoxModel: false
+    },
+    canvas: {
+        scale: 1,
+        fit: "contain"
+    },
+    stylePage: true
+};
+// merge DEFAULT_OPTIONS & custom options
+const $e45c2cbdae0ebc9e$var$mergeOptions = (defaultOpts, userOpts)=>{
+    return {
+        ...defaultOpts,
+        ...userOpts,
+        container: {
+            ...defaultOpts.container,
+            ...userOpts.container
+        },
+        canvas: {
+            ...defaultOpts.canvas,
+            ...userOpts.canvas
+        }
+    };
+};
+// flex main function
+const $e45c2cbdae0ebc9e$var$flex = (canvas, options)=>{
+    const OPTIONS = $e45c2cbdae0ebc9e$var$mergeOptions($e45c2cbdae0ebc9e$var$DEFAULT_OPTIONS, options);
+    const fit = OPTIONS.canvas.fit ?? "contain";
+    const customBoxModel = OPTIONS.container.customBoxModel;
+    // style html and body if stylePage set to true
+    if (OPTIONS.stylePage) $e45c2cbdae0ebc9e$var$__flexStyle__.pageCSS();
+    // set container parent
+    const parent = OPTIONS.container.parent ?? document.body;
+    OPTIONS.container.parent = parent;
+    // create flex-container
+    const container = document.createElement("div");
+    const id = OPTIONS.container.id ?? `flex-container-${canvas.id}`;
+    container.id = OPTIONS.container.id = id;
+    canvas.container = container;
+    // style flex-container and append it to specified parent or body
+    $e45c2cbdae0ebc9e$var$__flexStyle__.containerCSS(container, OPTIONS);
+    container.classList.add("flex-container");
+    parent.appendChild(container);
+    // create inner container, only in COVER | NONE mode
+    // because COVER and NONE modes utilize CSS overflow hidden
+    // container -> inner container -> canvas
+    let innerContainer;
+    if ([
+        "cover",
+        "none"
+    ].includes(fit)) {
+        innerContainer = document.createElement("div");
+        $e45c2cbdae0ebc9e$var$__flexStyle__.innerContainerCSS(innerContainer, OPTIONS);
+        container.appendChild(innerContainer);
+    }
+    // calculate vertical and horizontal padding values
+    // paddingVer and paddingHor will be used in the stretchToContain function
+    // to calculate the correct container width and height
+    const calcPadding = ()=>{
+        const containerStyle = customBoxModel ? getComputedStyle(container) // user custom sheet style
+         : container.style // faster
+        ;
+        const padding = (side)=>parseFloat(containerStyle[`padding${side}`]);
+        const paddingVer = padding("Top") + padding("Bottom");
+        const paddingHor = padding("Left") + padding("Right");
+        return [
+            paddingVer,
+            paddingHor
+        ];
+    };
+    let [paddingVer, paddingHor] = calcPadding();
+    // store last resized element, "container" | "canvas"
+    let resizedElement = "";
+    // store stretch side, "width" | "height"
+    let stretchSide = "";
+    // stretch & stretchToContain only in CONTAIN | COVER mode
+    // one direction (either width or height) needs to stretch to fit the container
+    // to keep the aspect ratio, the other direction does not need to stretch
+    const stretch = (side)=>{
+        if (resizedElement === "container" && stretchSide === side) return;
+        stretchSide = side;
+        canvas.style.width = side === "width" ? "100%" : "";
+        canvas.style.height = side === "height" ? "100%" : "";
+    };
+    const stretchToContain = ()=>{
+        requestAnimationFrame(()=>{
+            if (customBoxModel) [paddingVer, paddingHor] = calcPadding();
+            const containerW = container.clientWidth - paddingHor;
+            const containerH = container.clientHeight - paddingVer;
+            const containerAR = containerW / containerH;
+            const canvasAR = canvas.width / canvas.height;
+            if (containerAR >= canvasAR) {
+                if (fit === "contain") stretch("height");
+                if (fit === "cover") stretch("width");
+            } else {
+                if (fit === "contain") stretch("width");
+                if (fit === "cover") stretch("height");
+            }
+        });
+    };
+    // set ResizeObserver for the container
+    if ([
+        "contain",
+        "cover"
+    ].includes(fit)) new ResizeObserver(()=>{
+        resizedElement = "container";
+        stretchToContain();
+    }).observe(container);
+    // style canvas and append it to flex-container
+    $e45c2cbdae0ebc9e$var$__flexStyle__.canvasCSS(canvas, OPTIONS);
+    if ([
+        "cover",
+        "none"
+    ].includes(fit)) {
+        innerContainer.classList.add("flex-canvas");
+        innerContainer.appendChild(canvas);
+    } else {
+        canvas.classList.add("flex-canvas");
+        container.appendChild(canvas);
+    }
+};
+(0, $946b8ae9394ed0c3$export$2e2bcd8739ae039).prototype.flex = function(options = {}) {
+    $e45c2cbdae0ebc9e$var$flex(this.ATTACH_TO_2D ? this.canvas2D : this.canvas, options);
+};
+var $e45c2cbdae0ebc9e$export$2e2bcd8739ae039 = (0, $946b8ae9394ed0c3$export$2e2bcd8739ae039);
+
+
 const $95a2ddbad6c62d80$export$fe58198efe02b173 = (src)=>new Promise((resolve, reject)=>{
         const image = new Image();
         image.addEventListener("load", ()=>resolve(image));
@@ -1260,6 +1537,20 @@ const $95a2ddbad6c62d80$export$fe58198efe02b173 = (src)=>new Promise((resolve, r
         image.crossOrigin = "anonymous";
         image.src = src;
     });
+const $95a2ddbad6c62d80$export$e733acd7e07c0138 = async ()=>{
+    const video = document.createElement("video");
+    try {
+        const stream = await navigator.mediaDevices.getUserMedia({
+            video: true
+        });
+        video.srcObject = stream;
+        video.play();
+        return video;
+    } catch (error) {
+        console.error("Error accessing video stream:", error);
+        return null;
+    }
+};
 const $95a2ddbad6c62d80$export$83674196993caf59 = async (path)=>{
     let shaderCode;
     try {
@@ -1298,5 +1589,5 @@ const $95a2ddbad6c62d80$var$_processIncludes = async (shaderCode)=>{
 var $c11457d2050428cd$export$2e2bcd8739ae039 = (width, height, ATTACH_TO_2D)=>new (0, $946b8ae9394ed0c3$export$2e2bcd8739ae039)(width, height, ATTACH_TO_2D);
 
 
-export {$c11457d2050428cd$export$2e2bcd8739ae039 as default, $95a2ddbad6c62d80$export$83674196993caf59 as loadShader, $95a2ddbad6c62d80$export$fe58198efe02b173 as loadImage};
+export {$c11457d2050428cd$export$2e2bcd8739ae039 as default, $95a2ddbad6c62d80$export$83674196993caf59 as loadShader, $95a2ddbad6c62d80$export$fe58198efe02b173 as loadImage, $95a2ddbad6c62d80$export$e733acd7e07c0138 as loadWebcam};
 //# sourceMappingURL=Olon.js.map
