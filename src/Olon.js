@@ -15,6 +15,7 @@ import "./Mouse/mouse.js"
 
 import "./Capability/blend.js"
 import "./Capability/depth.js"
+import "./Capability/cull.js"
 import "./Capability/clear.js"
 
 import "./Texture/texture.js"

@@ -76,6 +76,14 @@ Olon.prototype.MIN = 32775 // this.gl.MIN
 Olon.prototype.MAX = 32776 // this.gl.MAX
 
 /////////////////////////////////////////////
+/////////////////////////////////////////////
+
+Olon.prototype.FRONT = 1028 // this.gl.FRONT
+Olon.prototype.BACK = 1029 // this.gl.BACK
+Olon.prototype.FRONT_AND_BACK = 1032 // this.gl.FRONT_AND_BACK
+Olon.prototype.ALL = 1032 // this.gl.FRONT_AND_BACK
+
+/////////////////////////////////////////////
 // BLEND FACTOR /////////////////////////////
 
 Olon.prototype.ZERO = 0 // this.gl.ZERO
