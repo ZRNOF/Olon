@@ -9,6 +9,19 @@ const loadImage = (src) =>
 		image.src = src
 	})
 
+const loadWebcam = async () => {
+	const video = document.createElement("video")
+	try {
+		const stream = await navigator.mediaDevices.getUserMedia({ video: true })
+		video.srcObject = stream
+		video.play()
+		return video
+	} catch (error) {
+		console.error("Error accessing video stream:", error)
+		return null
+	}
+}
+
 const loadShader = async (path) => {
 	let shaderCode
 	try {
@@ -52,4 +65,4 @@ const _processIncludes = async (shaderCode) => {
 	return shaderCode
 }
 
-export { loadImage, loadShader }
+export { loadImage, loadWebcam, loadShader }

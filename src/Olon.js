@@ -28,8 +28,8 @@ import "./TransformFeedback/transformFeedback.js"
 import "./Data/data.js"
 import "./Data/vertices.js"
 
-import { loadShader, loadImage } from "./Utils/load.js"
+import { loadShader, loadImage, loadWebcam } from "./Utils/load.js"
 
-export { loadShader, loadImage }
+export { loadShader, loadImage, loadWebcam }
 export default (width, height, ATTACH_TO_2D) =>
 	new Olon(width, height, ATTACH_TO_2D)
