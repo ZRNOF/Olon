@@ -1,6 +1,6 @@
 {
 	"name": "olon",
-	"version": "0.2.4",
+	"version": "0.3.0",
 	"description": "Lightweight WebGL2 Tools",
 	"homepage": "https://github.com/ZRNOF/Olon",
 	"repository": {
@@ -10,7 +10,7 @@
 	"source": "src/Olon.js",
 	"main": "dist/Olon.js",
 	"scripts": {
-		"watch": "parcel watch",
+		"dev": "parcel watch",
 		"build": "parcel build && npm run minify",
 		"minify": "terser -c -m --module -o dist/Olon.min.js dist/Olon.js"
 	},
