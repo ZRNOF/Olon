@@ -10,6 +10,7 @@ class Olon {
 		this.oMouseY = 0
 		this.mouseX = 0
 		this.mouseY = 0
+		this.isLooping = true
 
 		this.bufferList = {}
 
@@ -100,7 +101,17 @@ class Olon {
 			if (this.canvas2D) this.o2D.drawImage(this.canvas, 0, 0)
 
 			this.lastFrameTime = this.currentTime
+			this.isLooping && requestAnimationFrame(animate)
+		}
+
+		this.pause = () => (this.isLooping = false)
+		this.play = () => {
+			this.isLooping = true
 			requestAnimationFrame(animate)
+		}
+		this.toggle = () => {
+			this.isLooping = !this.isLooping
+			this.isLooping && requestAnimationFrame(animate)
 		}
 
 		this.startTime = performance.now()
