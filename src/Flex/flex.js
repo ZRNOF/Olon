@@ -118,7 +118,8 @@ const mergeOptions = (defaultOpts, userOpts) => {
 }
 
 // flex main function
-const flex = (canvas, options) => {
+Olon.prototype.flex = function (options = {}) {
+	const canvas = this.ATTACH_TO_2D ? this.canvas2D : this.canvas
 	const OPTIONS = mergeOptions(DEFAULT_OPTIONS, options)
 	const fit = OPTIONS.canvas.fit ?? "contain"
 	const customBoxModel = OPTIONS.container.customBoxModel
@@ -212,14 +213,12 @@ const flex = (canvas, options) => {
 	if (["cover", "none"].includes(fit)) {
 		innerContainer.classList.add("flex-canvas")
 		innerContainer.appendChild(canvas)
+		this.ATTACH_TO_2D && innerContainer.appendChild(this.canvas)
 	} else {
 		canvas.classList.add("flex-canvas")
 		container.appendChild(canvas)
+		this.ATTACH_TO_2D && container.appendChild(this.canvas)
 	}
-}
-
-Olon.prototype.flex = function (options = {}) {
-	flex(this.ATTACH_TO_2D ? this.canvas2D : this.canvas, options)
 }
 
 export default Olon
