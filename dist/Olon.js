@@ -1538,16 +1538,22 @@ const $95a2ddbad6c62d80$export$fe58198efe02b173 = (src)=>new Promise((resolve, r
         image.src = src;
     });
 const $95a2ddbad6c62d80$export$e733acd7e07c0138 = async ()=>{
-    const video = document.createElement("video");
+    const webcam = document.createElement("video");
     try {
-        const stream = await navigator.mediaDevices.getUserMedia({
-            video: true
-        });
-        video.srcObject = stream;
-        video.play();
-        return video;
+        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+            const stream = await navigator.mediaDevices.getUserMedia({
+                video: true
+            });
+            webcam.srcObject = stream;
+            webcam.setAttribute("playsinline", "");
+            webcam.play();
+            return webcam;
+        } else {
+            console.error("Your browser does not support accessing the webcam. Please try using a different browser.");
+            return null;
+        }
     } catch (error) {
-        console.error("Error accessing video stream:", error);
+        console.error("Error accessing stream:", error);
         return null;
     }
 };
