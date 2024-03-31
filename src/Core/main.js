@@ -11,6 +11,10 @@ class Olon {
 		this.mouseX = 0
 		this.mouseY = 0
 		this.isLooping = true
+		this._renderFunc = () => {}
+		this._isSave = false
+		this._canvasToSave = null
+		this._saveName = "untitled.png"
 
 		this.bufferList = {}
 
@@ -88,7 +92,59 @@ class Olon {
 		)
 	}
 
+	_save() {
+		this._isSave = false
+		let extension = "png"
+		if (this._saveName) {
+			const parts = this._saveName.split(".")
+			if (parts.length > 1) {
+				extension = parts[parts.length - 1].toLowerCase()
+				if (!["png", "jpg", "jpeg"].includes(extension)) extension = "png"
+			}
+		}
+
+		const tempCanvas = document.createElement("canvas")
+		tempCanvas.width = this._canvasToSave.width
+		tempCanvas.height = this._canvasToSave.height
+
+		const tempCtx = tempCanvas.getContext("2d")
+		tempCtx.drawImage(this._canvasToSave, 0, 0)
+
+		tempCanvas.toBlob(
+			(blob) => {
+				const link = document.createElement("a")
+				link.href = URL.createObjectURL(blob)
+				link.download = this._saveName
+				link.click()
+				URL.revokeObjectURL(link.href)
+			},
+			["jpg", "jpeg"].includes(extension) ? "image/jpeg" : "image/png"
+		)
+	}
+
+	save(filename) {
+		this._isSave = true
+		this._canvasToSave = this.ATTACH_TO_2D ? this.canvas2D : this.canvas
+		this._saveName = filename
+		if (!this.isLooping) {
+			!this.ATTACH_TO_2D && this._renderFunc()
+			this._save()
+		}
+	}
+
+	saveCanvas(canvas, filename) {
+		this._isSave = true
+		this._canvasToSave = canvas
+		this._saveName = filename
+		if (!this.isLooping) {
+			!this.ATTACH_TO_2D && this._renderFunc()
+			this._save()
+		}
+	}
+
 	render(renderFunc) {
+		this._renderFunc = renderFunc
+
 		const animate = (timestamp) => {
 			this.frame++
 			this.timestamp = timestamp
@@ -96,9 +152,10 @@ class Olon {
 			this.seconds = (this.currentTime - this.startTime) / 1000
 			this.fps = 1000 / (this.currentTime - this.lastFrameTime)
 
-			renderFunc()
+			this._renderFunc()
 
 			if (this.canvas2D) this.o2D.drawImage(this.canvas, 0, 0)
+			if (this._isSave) this._save()
 
 			this.lastFrameTime = this.currentTime
 			this.isLooping && requestAnimationFrame(animate)
@@ -106,8 +163,10 @@ class Olon {
 
 		this.pause = () => (this.isLooping = false)
 		this.play = () => {
-			this.isLooping = true
-			requestAnimationFrame(animate)
+			if (!this.isLooping) {
+				this.isLooping = true
+				requestAnimationFrame(animate)
+			}
 		}
 		this.toggle = () => {
 			this.isLooping = !this.isLooping
