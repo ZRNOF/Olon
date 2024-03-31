@@ -11,6 +11,10 @@ class $946b8ae9394ed0c3$var$Olon {
         this.mouseX = 0;
         this.mouseY = 0;
         this.isLooping = true;
+        this._renderFunc = ()=>{};
+        this._isSave = false;
+        this._canvasToSave = null;
+        this._saveName = "untitled.png";
         this.bufferList = {};
         this.ATTACH_TO_2D = ATTACH_TO_2D;
         this.canvas2D = null;
@@ -71,22 +75,74 @@ class $946b8ae9394ed0c3$var$Olon {
         this.canvas2D.addEventListener("mousemove", (e)=>this._mouseMove(e, this.canvas2D));
         this.canvas2D.addEventListener("touchmove", (e)=>this._touchMove(e, this.canvas2D));
     }
+    _save() {
+        this._isSave = false;
+        let extension = "png";
+        if (this._saveName) {
+            const parts = this._saveName.split(".");
+            if (parts.length > 1) {
+                extension = parts[parts.length - 1].toLowerCase();
+                if (![
+                    "png",
+                    "jpg",
+                    "jpeg"
+                ].includes(extension)) extension = "png";
+            }
+        }
+        const tempCanvas = document.createElement("canvas");
+        tempCanvas.width = this._canvasToSave.width;
+        tempCanvas.height = this._canvasToSave.height;
+        const tempCtx = tempCanvas.getContext("2d");
+        tempCtx.drawImage(this._canvasToSave, 0, 0);
+        tempCanvas.toBlob((blob)=>{
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = this._saveName;
+            link.click();
+            URL.revokeObjectURL(link.href);
+        }, [
+            "jpg",
+            "jpeg"
+        ].includes(extension) ? "image/jpeg" : "image/png");
+    }
+    save(filename) {
+        this._isSave = true;
+        this._canvasToSave = this.ATTACH_TO_2D ? this.canvas2D : this.canvas;
+        this._saveName = filename;
+        if (!this.isLooping) {
+            !this.ATTACH_TO_2D && this._renderFunc();
+            this._save();
+        }
+    }
+    saveCanvas(canvas, filename) {
+        this._isSave = true;
+        this._canvasToSave = canvas;
+        this._saveName = filename;
+        if (!this.isLooping) {
+            !this.ATTACH_TO_2D && this._renderFunc();
+            this._save();
+        }
+    }
     render(renderFunc) {
+        this._renderFunc = renderFunc;
         const animate = (timestamp)=>{
             this.frame++;
             this.timestamp = timestamp;
             this.currentTime = performance.now();
             this.seconds = (this.currentTime - this.startTime) / 1000;
             this.fps = 1000 / (this.currentTime - this.lastFrameTime);
-            renderFunc();
+            this._renderFunc();
             if (this.canvas2D) this.o2D.drawImage(this.canvas, 0, 0);
+            if (this._isSave) this._save();
             this.lastFrameTime = this.currentTime;
             this.isLooping && requestAnimationFrame(animate);
         };
         this.pause = ()=>this.isLooping = false;
         this.play = ()=>{
-            this.isLooping = true;
-            requestAnimationFrame(animate);
+            if (!this.isLooping) {
+                this.isLooping = true;
+                requestAnimationFrame(animate);
+            }
         };
         this.toggle = ()=>{
             this.isLooping = !this.isLooping;
@@ -1426,7 +1482,8 @@ const $e45c2cbdae0ebc9e$var$mergeOptions = (defaultOpts, userOpts)=>{
     };
 };
 // flex main function
-const $e45c2cbdae0ebc9e$var$flex = (canvas, options)=>{
+(0, $946b8ae9394ed0c3$export$2e2bcd8739ae039).prototype.flex = function(options = {}) {
+    const canvas = this.ATTACH_TO_2D ? this.canvas2D : this.canvas;
     const OPTIONS = $e45c2cbdae0ebc9e$var$mergeOptions($e45c2cbdae0ebc9e$var$DEFAULT_OPTIONS, options);
     const fit = OPTIONS.canvas.fit ?? "contain";
     const customBoxModel = OPTIONS.container.customBoxModel;
@@ -1517,13 +1574,12 @@ const $e45c2cbdae0ebc9e$var$flex = (canvas, options)=>{
     ].includes(fit)) {
         innerContainer.classList.add("flex-canvas");
         innerContainer.appendChild(canvas);
+        this.ATTACH_TO_2D && innerContainer.appendChild(this.canvas);
     } else {
         canvas.classList.add("flex-canvas");
         container.appendChild(canvas);
+        this.ATTACH_TO_2D && container.appendChild(this.canvas);
     }
-};
-(0, $946b8ae9394ed0c3$export$2e2bcd8739ae039).prototype.flex = function(options = {}) {
-    $e45c2cbdae0ebc9e$var$flex(this.ATTACH_TO_2D ? this.canvas2D : this.canvas, options);
 };
 var $e45c2cbdae0ebc9e$export$2e2bcd8739ae039 = (0, $946b8ae9394ed0c3$export$2e2bcd8739ae039);
 
