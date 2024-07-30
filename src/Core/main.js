@@ -15,6 +15,9 @@ class Olon {
 		this._isSave = false
 		this._canvasToSave = null
 		this._saveName = "untitled.png"
+		this.FLOAT_FORMAT_SUPPORT = false
+		this.SUPPORTED_EXTENSIONS = []
+		this.UNSUPPORTED_EXTENSIONS = []
 
 		this.bufferList = {}
 
