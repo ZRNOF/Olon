@@ -20,6 +20,6 @@
 	"author": "Zaron Chen",
 	"license": "MIT",
 	"devDependencies": {
-		"parcel": "^2.11.0"
+		"parcel": "^2.12.0"
 	}
 }
