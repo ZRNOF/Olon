@@ -15,6 +15,9 @@ class $946b8ae9394ed0c3$var$Olon {
         this._isSave = false;
         this._canvasToSave = null;
         this._saveName = "untitled.png";
+        this.FLOAT_FORMAT_SUPPORT = false;
+        this.SUPPORTED_EXTENSIONS = [];
+        this.UNSUPPORTED_EXTENSIONS = [];
         this.bufferList = {};
         this.ATTACH_TO_2D = ATTACH_TO_2D;
         this.canvas2D = null;
@@ -663,17 +666,21 @@ var $d4c17cdf169be816$export$2e2bcd8739ae039 = (0, $946b8ae9394ed0c3$export$2e2b
 
 
 
-(0, $946b8ae9394ed0c3$export$2e2bcd8739ae039).prototype.enableExtensions = function(reqExt) {
-    const unsExt = reqExt.filter((ext)=>!this.gl.getExtension(ext));
-    if (unsExt.length === 0) return true;
-    console.warn("enableFloat: The following extensions are not supported:", unsExt.join(", "));
-    return unsExt;
+(0, $946b8ae9394ed0c3$export$2e2bcd8739ae039).prototype.enableExtensions = function(requestExtensions) {
+    requestExtensions.forEach((ext)=>{
+        if (!this.gl.getExtension(ext)) this.UNSUPPORTED_EXTENSIONS.push(ext);
+        else this.SUPPORTED_EXTENSIONS.push(ext);
+    });
+    if (this.UNSUPPORTED_EXTENSIONS.length === 0) return true;
+    console.warn("The following extensions are not supported:", this.UNSUPPORTED_EXTENSIONS.join(", "));
+    return false;
 };
 (0, $946b8ae9394ed0c3$export$2e2bcd8739ae039).prototype.enableFloat = function() {
-    this.enableExtensions([
+    this.FLOAT_FORMAT_SUPPORT = this.enableExtensions([
         "EXT_color_buffer_float",
         "OES_texture_float_linear"
     ]);
+    if (!this.FLOAT_FORMAT_SUPPORT) console.warn("Failed to enable float format. If encounter any errors, please try browsing the following resources:\n", "- https://developer.mozilla.org/en-US/docs/Web/API/OES_texture_float_linear\n", "- https://developer.mozilla.org/en-US/docs/Web/API/EXT_color_buffer_float");
 };
 var $6973175316e650a7$export$2e2bcd8739ae039 = (0, $946b8ae9394ed0c3$export$2e2bcd8739ae039);
 
